@@ -25,7 +25,7 @@ trait HateoasResponseTrait
     ): Response {
         $params = $this->getResolvedParams($request, $defaultParams);
 
-        $mergedFilters = array_merge($params['filters'], $overrideFilters);
+        $mergedFilters = \array_merge($params['filters'], $overrideFilters);
 
         $pager = $repository->getPaginatorByFilters(
             $mergedFilters,
@@ -67,7 +67,7 @@ trait HateoasResponseTrait
             ->addGroups($serializerGroups);
 
         $view = $this->view($data, $statusCode, $headers)
-                     ->setContext($context);
+            ->setContext($context);
 
         return $this->handleView($view);
     }
@@ -91,10 +91,10 @@ trait HateoasResponseTrait
                 'serializerGroups' => $defaultParams['serializerGroups'] ?? [],
             ])
             ->setNormalizer('page', function (Options $options, $value) {
-                return filter_var($value, FILTER_VALIDATE_INT);
+                return \filter_var($value, \FILTER_VALIDATE_INT);
             })
             ->setNormalizer('limit', function (Options $options, $value) {
-                return filter_var($value, FILTER_VALIDATE_INT);
+                return \filter_var($value, \FILTER_VALIDATE_INT);
             })
             ->resolve($request->query->all());
     }

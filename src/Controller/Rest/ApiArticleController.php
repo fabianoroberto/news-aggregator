@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Rest;
 
 use App\Controller\Rest\Traits\HateoasResponseTrait;
-use App\Entity\User;
-use App\Repository\UserRepositoryInterface;
+use App\Entity\Article;
+use App\Repository\ArticleRepositoryInterface;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -16,31 +17,35 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @OA\Tag(name="Users")
- * @Security(name="Bearer")
+ * Class ApiArticleController
+ *
+ * @OA\Tag(name="Articles")
  */
-class ApiUserController extends ApiBaseController
+class ApiArticleController extends AbstractFOSRestController
 {
     use HateoasResponseTrait;
 
-    public function __construct(private UserRepositoryInterface $userRepository)
+    private ArticleRepositoryInterface $articleRepository;
+
+    public function __construct(ArticleRepositoryInterface $articleRepository)
     {
+        $this->articleRepository = $articleRepository;
     }
 
     /**
-     * @Rest\Get("/api/v1/users", name="api_get_users")
+     * @Rest\Get("/api/v1/articles", name="api_get_articles")
      *
      * @OA\Parameter(
      *     in="query",
      *     name="page",
-     *     description="Page from which to start listing users.",
+     *     description="Page from which to start listing articles.",
      *     required=true,
      *     @OA\Schema(type="integer", default="1")
      * )
      * @OA\Parameter(
      *     in="query",
      *     name="limit",
-     *     description="How many items to return.",
+     *     description="How many items to return",
      *     required=true,
      *     @OA\Schema(type="integer", default="10")
      * )
@@ -65,7 +70,9 @@ class ApiUserController extends ApiBaseController
      *         type="array",
      *         @OA\Items(
      *             type="string",
-     *             enum={"user"}
+     *             enum={
+     *                 "article"
+     *             }
      *         )
      *     )
      * )
@@ -75,22 +82,22 @@ class ApiUserController extends ApiBaseController
      *     @OA\Schema(
      *         type="array",
      *         @OA\Items(
-     *             ref=@Model(type=User::class, groups={"user"})
+     *             ref=@Model(type=Article::class, groups={"article"})
      *         )
      *     )
      * )
      */
     public function index(Request $request): Response
     {
-        return $this->handleCollectionRequest($this->userRepository, $request, [
+        return $this->handleCollectionRequest($this->articleRepository, $request, [
             'serializerGroups' => [
-                'user',
+                'article',
             ],
         ]);
     }
 
     /**
-     * @Rest\Get("/api/v1/user/{id}", name="api_get_user")
+     * @Rest\Get("/api/v1/article/{id}", name="api_get_article")
      * @Security(name="Bearer")
      *
      * @OA\Parameter(
@@ -104,7 +111,7 @@ class ApiUserController extends ApiBaseController
      *         @OA\Items(
      *             type="string",
      *             enum={
-     *                 "user"
+     *                 "article"
      *             }
      *         )
      *     )
@@ -115,9 +122,9 @@ class ApiUserController extends ApiBaseController
      *     @OA\Schema(
      *         type="object",
      *         ref=@Model(
-     *             type=User::class,
+     *             type=Article::class,
      *             groups={
-     *                 "user"
+     *                 "article"
      *             }
      *         )
      *     )
@@ -128,36 +135,13 @@ class ApiUserController extends ApiBaseController
         $params = (new OptionsResolver())
             ->setDefaults([
                 'serializerGroups' => [
-                    'user',
+                    'article',
                 ],
             ])
             ->resolve($request->query->all());
 
-        $entity = $this->userRepository->find($id);
+        $entity = $this->articleRepository->find($id);
 
         return $this->serializeResponse($entity, $params['serializerGroups']);
-    }
-
-    /**
-     * @Rest\Get("/api/v1/users/me", name="api_get_users_me")
-     *
-     * @OA\Response(
-     *     response=Response::HTTP_OK,
-     *     description="Success",
-     *     @OA\Schema(
-     *         type="object",
-     *         ref=@Model(type=User::class, groups={"user"})
-     *     )
-     * )
-     *
-     * @throws \Exception
-     */
-    public function me(Request $request)
-    {
-        $params = $request->query->all();
-        $serializerGroups = $params['serializerGroups'] ?? ['user'];
-        $data = $this->getLoggedUser();
-
-        return $this->serializeResponse($data, $serializerGroups);
     }
 }

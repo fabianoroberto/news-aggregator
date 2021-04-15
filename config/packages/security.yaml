@@ -65,7 +65,8 @@ security:
         - { path: ^/api/v1/auth/(refresh-token$|password-reset-request$|set-password$), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/api/v1/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1, 192.168.0.1/24] }
-        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, port: 8082 }
+        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, port: 8080 }
+        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, host: news-aggregator\.local$ }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

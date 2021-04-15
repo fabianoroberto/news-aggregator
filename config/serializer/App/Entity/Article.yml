@@ -1,0 +1,30 @@
+App\Entity\Article:
+    exclusion_policy: all
+    relations:
+        - rel: self
+          href:
+              route: api_get_article
+              parameters:
+                  id: expr(object.getUuid())
+                  _format: json
+              absolute: false
+          exclusion:
+              groups: [ hateoas ]
+    properties:
+        title:
+            expose: true
+            groups: [article]
+        description:
+            expose: true
+            type: array
+            groups: [article]
+        link:
+            expose: true
+            groups: [article]
+        comments:
+            expose: true
+            groups: [article.comments]
+    virtual_properties:
+        getUuid:
+            serialized_name: id
+            groups: [ article ]

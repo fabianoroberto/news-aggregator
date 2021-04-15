@@ -7,8 +7,8 @@ namespace App\Controller\Rest;
 use App\Controller\Rest\Traits\HateoasResponseTrait;
 use App\Entity\Comment;
 use App\Repository\CommentRepositoryInterface;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
@@ -18,7 +18,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ApiCommentController
- * @package App\Controller\Rest
  *
  * @OA\Tag(name="Comments")
  */

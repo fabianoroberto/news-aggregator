@@ -47,6 +47,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "fakerphp/faker": "^1.14",
         "friendsofphp/php-cs-fixer": "^2.18",
         "symfony/debug-bundle": "^5.2",
         "symfony/maker-bundle": "^1.30",
@@ -86,6 +87,22 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "fix": [
+            "symfony php vendor/bin/php-cs-fixer fix --verbose"
+        ],
+        "fix-dry-run": [
+            "symfony php vendor/bin/php-cs-fixer fix --diff --dry-run -v"
+        ],
+        "lint-yaml": [
+            "symfony console lint:yaml config --parse-tags"
+        ],
+        "lint-twig": [
+            "symfony console lint:twig templates",
+            "symfony console lint:twig src"
+        ],
+        "schema-validate": [
+            "symfony console doctrine:schema:validate --skip-sync -vvv --no-interaction"
         ]
     },
     "conflict": {

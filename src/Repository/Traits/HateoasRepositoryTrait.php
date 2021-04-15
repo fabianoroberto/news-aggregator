@@ -6,8 +6,8 @@ namespace App\Repository\Traits;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Pagerfanta\Pagerfanta;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 
 trait HateoasRepositoryTrait
 {
@@ -26,14 +26,14 @@ trait HateoasRepositoryTrait
         $associations = $cm->getAssociationNames();
 
         //all entity field names plus association fields
-        $fields = array_merge($fieldNames, $associations);
+        $fields = \array_merge($fieldNames, $associations);
 
         $qb = $this->createQueryBuilderByFilters($filters, $fields);
 
         if ($orderBy !== null) {
             foreach ($orderBy as $key => $value) {
-                if (\in_array($key, $fields)) {
-                    $key = "$this->alias.$key";
+                if (\in_array($key, $fields, true)) {
+                    $key = "{$this->alias}.{$key}";
                 }
 
                 $qb->addOrderBy($key, $value);
@@ -66,20 +66,22 @@ trait HateoasRepositoryTrait
                         foreach ($filterValue as $subFilterName => $subFilterValue) {
                             $subFilterNameParam = 'not_' . $subFilterName;
 
-                            $andX[] = $qb->expr()->notIn("$this->alias.$subFilterName", ':' . $subFilterNameParam);
+                            $andX[] = $qb->expr()->notIn("{$this->alias}.{$subFilterName}", ':' . $subFilterNameParam);
                             $params[$subFilterNameParam] = $subFilterValue;
                         }
 
                         break;
+
                     case 'like':
                         foreach ($filterValue as $subFilterName => $subFilterValue) {
                             $subFilterNameParam = 'like_' . $subFilterName;
 
-                            $andX[] = $qb->expr()->like("$this->alias.$subFilterName", ':' . $subFilterNameParam);
+                            $andX[] = $qb->expr()->like("{$this->alias}.{$subFilterName}", ':' . $subFilterNameParam);
                             $params[$subFilterNameParam] = $subFilterValue;
                         }
 
                         break;
+
                     case 'lt':
                     case 'lte':
                     case 'gt':
@@ -87,11 +89,11 @@ trait HateoasRepositoryTrait
                     case 'eq':
                     case 'neq':
                         foreach ($filterValue as $subFilterName => $subFilterValue) {
-                            if (\in_array($subFilterName, $fields)) {
+                            if (\in_array($subFilterName, $fields, true)) {
                                 $subFilterNameParam = "{$filterName}_{$subFilterName}";
 
                                 $andX[] = $qb->expr()->{$filterName}(
-                                    "$this->alias.$subFilterName",
+                                    "{$this->alias}.{$subFilterName}",
                                     ':' . $subFilterNameParam
                                 );
 
@@ -100,18 +102,20 @@ trait HateoasRepositoryTrait
                         }
 
                         break;
+
                     case 'search': // or statement
                         foreach ($filterValue as $subFilterName => $subFilterValue) {
                             $subFilterNameParam = 'like_' . $subFilterName;
 
-                            $orX[] = $qb->expr()->like("$this->alias.$subFilterName", ':' . $subFilterNameParam);
+                            $orX[] = $qb->expr()->like("{$this->alias}.{$subFilterName}", ':' . $subFilterNameParam);
                             $params[$subFilterNameParam] = $subFilterValue;
                         }
 
                         break;
+
                     case $filterName:
-                        if (\in_array($filterName, $fields)) {
-                            $andX[] = $qb->expr()->in("$this->alias.$filterName", ':' . $filterName);
+                        if (\in_array($filterName, $fields, true)) {
+                            $andX[] = $qb->expr()->in("{$this->alias}.{$filterName}", ':' . $filterName);
                             $params[$filterName] = $filterValue;
                         }
 
@@ -120,11 +124,11 @@ trait HateoasRepositoryTrait
             }
 
             if (\count($orX) > 0) {
-                $qb->orWhere('(' . implode(') OR (', $orX) . ')');
+                $qb->orWhere('(' . \implode(') OR (', $orX) . ')');
                 $qb->setParameters($params);
             }
             if (\count($andX) > 0) {
-                $qb->andWhere('(' . implode(') AND (', $andX) . ')');
+                $qb->andWhere('(' . \implode(') AND (', $andX) . ')');
                 $qb->setParameters($params);
             }
         }

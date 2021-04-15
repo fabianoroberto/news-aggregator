@@ -22,8 +22,8 @@ use Symfony\Component\Uid\Uuid;
  */
 class User implements UserInterface
 {
-    use TimestampableEntity;
     use SoftDeleteableEntity;
+    use TimestampableEntity;
 
     /**
      * @ORM\Id
@@ -34,13 +34,11 @@ class User implements UserInterface
     private ?Uuid $id;
 
     /**
-     * @var string
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private string $email;
 
     /**
-     * @var array
      * @ORM\Column(type="json")
      */
     private array $roles = [];
@@ -52,13 +50,11 @@ class User implements UserInterface
     private string $password;
 
     /**
-     * @var string
      * @ORM\Column(type="string", length=100)
      */
     private string $firstName = '';
 
     /**
-     * @var string
      * @ORM\Column(type="string", length=100)
      */
     private string $lastName = '';
@@ -71,6 +67,11 @@ class User implements UserInterface
     {
         $this->email = $email;
         $this->setRoles($roles);
+    }
+
+    public function __toString(): string
+    {
+        return $this->email;
     }
 
     public function getId(): ?Uuid
@@ -104,13 +105,6 @@ class User implements UserInterface
     public function getRoles(): array
     {
         return $this->roles;
-    }
-
-    private function setRoles(array $roles): self
-    {
-        $this->roles = array_unique($roles);
-
-        return $this;
     }
 
     /**
@@ -151,9 +145,8 @@ class User implements UserInterface
 
     public function getFullName(): string
     {
-        return sprintf('%s %s', trim($this->getFirstName()), trim($this->getLastName()));
+        return \sprintf('%s %s', \trim($this->getFirstName()), \trim($this->getLastName()));
     }
-
 
     /**
      * @see UserInterface
@@ -162,11 +155,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function __toString(): string
-    {
-        return $this->email;
     }
 
     public static function createFromRequest(UserDto $dto): self
@@ -187,5 +175,12 @@ class User implements UserInterface
             $this->setDeletedAt($dto->isEnabled() ? null : new DateTime());
             $this->roles = [$dto->getRole()];
         }
+    }
+
+    private function setRoles(array $roles): self
+    {
+        $this->roles = \array_unique($roles);
+
+        return $this;
     }
 }
