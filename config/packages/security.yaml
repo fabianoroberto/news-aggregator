@@ -1,0 +1,71 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER, ROLE_API_USER]
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        jwt_user_provider:
+            lexik_jwt:
+                class: App\Security\JwtUser
+        entity_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        login:
+            pattern:  ^/api/v1/auth/login
+            stateless: true
+            anonymous: true
+            provider: entity_user_provider
+            json_login:
+                check_path:               /api/v1/auth/login
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+            user_checker: App\Security\UserChecker
+        auth_api:
+            pattern:  ^/api/v1/auth/(refresh-token$|password-reset-request$|set-password$)
+            stateless: true
+            anonymous: true
+        public_api:
+            pattern: ^/api/v1/public/
+            stateless: true
+            anonymous: true
+        private_api:
+            pattern:   ^/api/v1/
+            stateless: true
+            provider: jwt_user_provider
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+                    - App\Security\TokenAuthenticator
+                entry_point: lexik_jwt_authentication.jwt_token_authenticator
+        main:
+            anonymous: true
+            lazy: true
+            provider: entity_user_provider
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/api/v1/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/auth/(refresh-token$|password-reset-request$|set-password$), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/api/v1/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1, 192.168.0.1/24] }
+        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, port: 8082 }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

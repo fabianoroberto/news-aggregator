@@ -1,0 +1,56 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: News Aggregator
+            description: This is an awesome app!
+            version: 0.1.1
+        servers:
+          - url: http://news-aggregator.local:8082
+            description: Local API
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+        security:
+            - Bearer: []
+        paths:
+            /api/v1/auth/login:
+                post:
+                    tags: [ Authentication ]
+                    requestBody:
+                        description: 'User credentials (use email as username)'
+                        content:
+                            'application/json':
+                                schema:
+                                    type: object
+                                    required: [ username, password ]
+                                    properties:
+                                        username: { type: string, example: 'admin@newsaggregator.local' }
+                                        password: { type: string, example: 'admin' }
+                    responses:
+                        '200':
+                            description: JWT Token
+                            content:
+                                'application/json': { }
+            /api/v1/auth/refresh-token:
+                post:
+                    tags: [ Authentication ]
+                    requestBody:
+                        description: 'Token to refresh'
+                        content:
+                            'application/json':
+                                schema:
+                                    type: object
+                                    required: [ refresh_token ]
+                                    properties:
+                                        refresh_token: { type: string }
+                    responses:
+                        '200':
+                            description: Updated JWT Token
+                            content:
+                                'application/json': { }
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc|/doc\.json$) # Accepts routes under /api except /api/doc

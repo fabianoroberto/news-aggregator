@@ -1,0 +1,15 @@
+jms_serializer:
+    visitors:
+        xml_serialization:
+            format_output: '%kernel.debug%'
+    property_naming:
+        id: jms_serializer.identical_property_naming_strategy
+    metadata:
+        auto_detection: true
+        directories:
+            entity:
+                namespace_prefix: "App\\Entity"
+                path: "%kernel.project_dir%/config/serializer/App/Entity"
+            hateoas:
+                namespace_prefix: "Hateoas\\Representation"
+                path: "%kernel.project_dir%/config/serializer/Hateoas"

@@ -1,0 +1,14 @@
+Hateoas\Representation\CollectionRepresentation:
+    exclusion_policy: all
+    exclude: false
+    expose: true
+    properties:
+        resources:
+            exclude: false
+            expose: true
+            groups: [hateoas]
+            serialized_name: items
+        rel:
+            exclude: false
+            expose: true
+            groups: [Default]

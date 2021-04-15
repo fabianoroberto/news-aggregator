@@ -1,0 +1,79 @@
+Hateoas\Representation\PaginatedRepresentation:
+    custom_accessor_order: [page, limit, pages, total]
+    relations:
+        -   rel: self
+            href:
+                route: expr(object.getRoute())
+                parameters:
+                    page: expr(object.getPage())
+                    limit: expr(object.getLimit())
+                    filters: expr(object.getParameters()['filters'])
+                    serializerGroups: expr(object.getParameters()['serializerGroups'])
+                    orderBy: expr(object.getParameters()['orderBy'])
+                absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: [hateoas]
+        -   rel: first
+            href:
+                route: expr(object.getRoute())
+                parameters:
+                    page: 1
+                    limit: expr(object.getLimit())
+                    filters: expr(object.getParameters()['filters'])
+                    serializerGroups: expr(object.getParameters()['serializerGroups'])
+                    orderBy: expr(object.getParameters()['orderBy'])
+                absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: [hateoas]
+        -   rel: last
+            href:
+                route: expr(object.getRoute())
+                parameters:
+                    page: expr(object.getPages())
+                    limit: expr(object.getLimit())
+                    filters: expr(object.getParameters()['filters'])
+                    serializerGroups: expr(object.getParameters()['serializerGroups'])
+                    orderBy: expr(object.getParameters()['orderBy'])
+                absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: [hateoas]
+                exclude_if: expr(object.getPages() === null)
+        -   rel: next
+            href:
+                route: expr(object.getRoute())
+                parameters:
+                    page: expr(object.getPage()+1)
+                    limit: expr(object.getLimit())
+                    filters: expr(object.getParameters()['filters'])
+                    serializerGroups: expr(object.getParameters()['serializerGroups'])
+                    orderBy: expr(object.getParameters()['orderBy'])
+                absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: [hateoas]
+                exclude_if: expr(object.getPages() !== null && (object.getPage() + 1) > object.getPages())
+        -   rel: previous
+            href:
+                route: expr(object.getRoute())
+                parameters:
+                    page: expr(object.getPage()-1)
+                    limit: expr(object.getLimit())
+                    filters: expr(object.getParameters()['filters'])
+                    serializerGroups: expr(object.getParameters()['serializerGroups'])
+                    orderBy: expr(object.getParameters()['orderBy'])
+                absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: [hateoas]
+                exclude_if: expr((object.getPage() - 1) < 1)
+    properties:
+        page:
+            expose: true
+            groups: [hateoas]
+        limit:
+            expose: true
+            groups: [hateoas]
+        pages:
+            expose: true
+            groups: [hateoas]
+        total:
+            expose: true
+            groups: [hateoas]

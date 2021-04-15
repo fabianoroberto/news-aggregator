@@ -2,16 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\NewsRepository;
+use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass=NewsRepository::class)
+ * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
-class News
+class Article
 {
     use TimestampableEntity;
 
@@ -38,7 +38,7 @@ class News
     private $link;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="news", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", orphanRemoval=true)
      */
     private $comments;
 
@@ -100,7 +100,7 @@ class News
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
-            $comment->setNews($this);
+            $comment->setArticle($this);
         }
 
         return $this;
@@ -110,8 +110,8 @@ class News
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getNews() === $this) {
-                $comment->setNews(null);
+            if ($comment->getArticle() === $this) {
+                $comment->setArticle(null);
             }
         }
 

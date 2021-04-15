@@ -3,32 +3,54 @@
     "description": "News aggregator",
     "type": "project",
     "license": "proprietary",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Fabiano Roberto",
+            "email": "fabiano.roberto@ped.technology",
+            "role": "Senior Back-end Developer"
+        }
+    ],
     "require": {
         "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-intl": "*",
+        "beberlei/assert": "^3.3",
         "composer/package-versions-deprecated": "1.11.99.1",
         "doctrine/doctrine-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.8",
+        "friendsofsymfony/rest-bundle": "^3.0",
         "gedmo/doctrine-extensions": "^3.0",
+        "gesdinet/jwt-refresh-token-bundle": "^0.11.1",
+        "jms/serializer-bundle": "^3.9",
+        "lexik/jwt-authentication-bundle": "^2.11",
+        "nelmio/api-doc-bundle": "^4.2",
+        "pagerfanta/doctrine-orm-adapter": "^3.0",
+        "pagerfanta/pagerfanta": "^3.0",
         "sensio/framework-extra-bundle": "^6.1",
         "stof/doctrine-extensions-bundle": "^1.6",
+        "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "5.2.*",
         "symfony/monolog-bundle": "^3.7",
         "symfony/proxy-manager-bridge": "5.2.*",
-        "symfony/yaml": "5.2.*"
+        "symfony/security-bundle": "5.2.*",
+        "symfony/twig-bundle": "^5.2",
+        "symfony/uid": "5.2.*",
+        "symfony/yaml": "5.2.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0",
+        "willdurand/hateoas-bundle": "^2.2"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "friendsofphp/php-cs-fixer": "^2.18",
         "symfony/debug-bundle": "^5.2",
         "symfony/maker-bundle": "^1.30",
         "symfony/stopwatch": "^5.2",
-        "symfony/twig-bundle": "^5.2",
         "symfony/var-dumper": "^5.2",
         "symfony/web-profiler-bundle": "^5.2"
     },
@@ -71,8 +93,10 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "5.2.*"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

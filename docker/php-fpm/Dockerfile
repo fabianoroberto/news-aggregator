@@ -11,15 +11,14 @@ RUN apk add bash
 RUN docker-php-ext-install pdo_mysql
 
 RUN install-php-extensions opcache xdebug @composer
+RUN install-php-extensions amqp intl zip
 
 #RUN install-php-extensions \
 #    amqp \
 #    intl \
-#    opcache \
 #    openssl \
 #    redis \
 #    supervisor \
-#    xdebug \
 #    xsl \
 #    zip
 

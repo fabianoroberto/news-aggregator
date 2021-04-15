@@ -36,10 +36,10 @@ class Comment
     private $email;
 
     /**
-     * @ORM\ManyToOne(targetEntity=News::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $news;
+    private $article;
 
     public function getId(): ?int
     {
@@ -82,14 +82,14 @@ class Comment
         return $this;
     }
 
-    public function getNews(): ?News
+    public function getArticle(): ?Article
     {
-        return $this->news;
+        return $this->article;
     }
 
-    public function setNews(?News $news): self
+    public function setArticle(?Article $article): self
     {
-        $this->news = $news;
+        $this->article = $article;
 
         return $this;
     }

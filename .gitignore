@@ -26,3 +26,7 @@ composer.phar
 /.php_cs
 /.php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

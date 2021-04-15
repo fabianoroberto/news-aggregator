@@ -1,0 +1,6 @@
+Hateoas\Representation\RouteAwareRepresentation:
+    properties:
+        inline:
+            expose: true
+            groups: [hateoas]
+            serialized_name: _embedded

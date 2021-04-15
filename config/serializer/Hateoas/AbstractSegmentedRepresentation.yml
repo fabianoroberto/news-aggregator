@@ -1,0 +1,8 @@
+Hateoas\Representation\AbstractSegmentedRepresentation:
+    properties:
+        limit:
+            expose: true
+            groups: [hateoas]
+        total:
+            expose: true
+            groups: [hateoas]
