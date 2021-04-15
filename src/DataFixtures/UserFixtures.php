@@ -5,66 +5,51 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends BaseFixtures
 {
-    private UserPasswordEncoderInterface $passwordEncoder;
-
-    /**
-     * UserFixtures constructor.
-     */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(private UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function load(ObjectManager $manager)
+    protected function loadData(ObjectManager $manager)
     {
-        $userData = [
-            [
-                'email' => 'admin@newsaggregator.local',
-                'password' => 'admin',
-                'firstName' => 'Admin',
-                'lastName' => 'News Aggregator',
-                'roles' => ['ROLE_ADMIN'],
-                'enabled' => true,
-            ],
-            [
-                'email' => 'user@newsaggregator.local',
-                'password' => 'user',
-                'firstName' => 'User',
-                'lastName' => 'News Aggregator',
-                'roles' => ['ROLE_USER'],
-                'enabled' => true,
-            ],
-            [
-                'email' => 'user+deleted@newsaggregator.local',
-                'password' => 'user',
-                'firstName' => 'Deleted User',
-                'lastName' => 'News Aggregator',
-                'roles' => ['ROLE_USER'],
-                'enabled' => false,
-            ],
-        ];
+        $className = User::class;
 
-        foreach ($userData as $data) {
-            $user = new User($data['email'], $data['roles']);
-            $user->setPassword($this->passwordEncoder->encodePassword(
-                $user,
-                $data['password']
+        $username = 'admin';
+        $email = \sprintf('%s@newsaggregator.local', $username);
+        $entity = new User($email, ['ROLE_ADMIN'], 'Admin', 'NewsAggregator');
+
+        $entity->setPassword($this->passwordEncoder->encodePassword(
+            $entity,
+            $username
+        ));
+
+        $manager->persist($entity);
+
+        for ($i = 0; $i < 10; $i++) {
+            $username = $this->faker->userName();
+            $email = \sprintf('%s@newsaggregator.local', $username);
+
+            $entity = new User($email, ['ROLE_USER'], $this->faker->firstName, $this->faker->lastName);
+
+            $entity->setPassword($this->passwordEncoder->encodePassword(
+                $entity,
+                $username
             ));
 
-            $manager->persist($user);
-            $manager->flush();
-
-            if ($data['enabled'] === false) {
-                $manager->remove($user);
+            if ($this->faker->boolean()) {
+                $manager->persist($entity);
+                $manager->flush();
+                $manager->remove($entity);
             }
 
-            $manager->flush();
+            $manager->persist($entity);
+            $this->addReference($className . '_' . $i, $entity);
         }
+
+        $manager->flush();
     }
 }

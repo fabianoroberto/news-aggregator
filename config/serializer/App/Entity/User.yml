@@ -25,6 +25,9 @@ App\Entity\User:
         lastName:
             expose: true
             groups: [user]
+        articles:
+            expose: true
+            groups: [ user.articles ]
     virtual_properties:
         getUuid:
             serialized_name: id

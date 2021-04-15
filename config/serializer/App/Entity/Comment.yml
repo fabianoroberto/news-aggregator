@@ -13,14 +13,14 @@ App\Entity\Comment:
     properties:
         author:
             expose: true
-            groups: [comment]
+            groups: [ comments, comment ]
         text:
             expose: true
             type: array
-            groups: [comment]
+            groups: [ comments, comment ]
         email:
             expose: true
-            groups: [comment]
+            groups: [ comment ]
     virtual_properties:
         getUuid:
             serialized_name: id

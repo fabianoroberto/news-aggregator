@@ -39,7 +39,7 @@ class Article
     /**
      * @ORM\Column(type="text")
      */
-    private ?string $description;
+    private ?string $content;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -50,6 +50,12 @@ class Article
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", orphanRemoval=true)
      */
     private Collection $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
 
     public function __construct()
     {
@@ -83,14 +89,14 @@ class Article
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getContent(): ?string
     {
-        return $this->description;
+        return $this->content;
     }
 
-    public function setDescription(string $description): self
+    public function setContent(string $content): self
     {
-        $this->description = $description;
+        $this->content = $content;
 
         return $this;
     }
@@ -135,5 +141,22 @@ class Article
         }
 
         return $this;
+    }
+
+    public function getAuthor(): User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getAuthorName(): string
+    {
+        return $this->getAuthor()->getFullName();
     }
 }

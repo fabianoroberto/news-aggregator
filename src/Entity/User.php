@@ -8,6 +8,8 @@ use App\Dto\UserDto;
 use App\Dto\UserExtendedDto;
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -52,21 +54,33 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private string $firstName = '';
+    private string $firstName;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private string $lastName = '';
+    private string $lastName;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
+     */
+    private Collection $articles;
 
     /**
      * Class Invariant:
      * Every user has a valid email and at least one valid role
      */
-    public function __construct(string $email, array $roles = ['ROLE_USER'])
-    {
+    public function __construct(
+        string $email,
+        array $roles = ['ROLE_USER'],
+        string $firstName = '',
+        string $lastName = '',
+    ) {
         $this->email = $email;
         $this->setRoles($roles);
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->articles = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -175,6 +189,36 @@ class User implements UserInterface
             $this->setDeletedAt($dto->isEnabled() ? null : new DateTime());
             $this->roles = [$dto->getRole()];
         }
+    }
+
+    /**
+     * @return Article[]|Collection
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getAuthor() === $this) {
+                $article->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 
     private function setRoles(array $roles): self

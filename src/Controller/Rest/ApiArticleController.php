@@ -71,7 +71,11 @@ class ApiArticleController extends AbstractFOSRestController
      *         @OA\Items(
      *             type="string",
      *             enum={
-     *                 "article"
+     *                 "article",
+     *                 "article.user",
+     *                 "user",
+     *                 "article.comments",
+     *                 "comments"
      *             }
      *         )
      *     )
@@ -111,7 +115,11 @@ class ApiArticleController extends AbstractFOSRestController
      *         @OA\Items(
      *             type="string",
      *             enum={
-     *                 "article"
+     *                 "article",
+     *                 "article.user",
+     *                 "user",
+     *                 "article.comments",
+     *                 "comments"
      *             }
      *         )
      *     )
@@ -123,9 +131,7 @@ class ApiArticleController extends AbstractFOSRestController
      *         type="object",
      *         ref=@Model(
      *             type=Article::class,
-     *             groups={
-     *                 "article"
-     *             }
+     *             groups={"article"}
      *         )
      *     )
      * )

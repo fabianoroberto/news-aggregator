@@ -65,7 +65,11 @@ class ApiUserController extends ApiBaseController
      *         type="array",
      *         @OA\Items(
      *             type="string",
-     *             enum={"user"}
+     *             enum={
+     *                 "user",
+     *                 "user.articles",
+     *                 "article"
+     *             }
      *         )
      *     )
      * )
@@ -104,7 +108,9 @@ class ApiUserController extends ApiBaseController
      *         @OA\Items(
      *             type="string",
      *             enum={
-     *                 "user"
+     *                 "user",
+     *                 "user.articles",
+     *                 "article"
      *             }
      *         )
      *     )
@@ -116,9 +122,7 @@ class ApiUserController extends ApiBaseController
      *         type="object",
      *         ref=@Model(
      *             type=User::class,
-     *             groups={
-     *                 "user"
-     *             }
+     *             groups={"user"}
      *         )
      *     )
      * )
@@ -141,6 +145,24 @@ class ApiUserController extends ApiBaseController
     /**
      * @Rest\Get("/api/v1/users/me", name="api_get_users_me")
      *
+     * @OA\Parameter(
+     *     in="query",
+     *     name="serializerGroups[]",
+     *     description="Custom serializer groups array",
+     *     required=false,
+     *     style="form",
+     *     @OA\Schema(
+     *         type="array",
+     *         @OA\Items(
+     *             type="string",
+     *             enum={
+     *                 "user",
+     *                 "user.articles",
+     *                 "article"
+     *             }
+     *         )
+     *     )
+     * )
      * @OA\Response(
      *     response=Response::HTTP_OK,
      *     description="Success",
@@ -152,7 +174,7 @@ class ApiUserController extends ApiBaseController
      *
      * @throws \Exception
      */
-    public function me(Request $request)
+    public function me(Request $request): Response
     {
         $params = $request->query->all();
         $serializerGroups = $params['serializerGroups'] ?? ['user'];

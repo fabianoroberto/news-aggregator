@@ -13,18 +13,23 @@ App\Entity\Article:
     properties:
         title:
             expose: true
-            groups: [article]
-        description:
+            groups: [ article ]
+        content:
             expose: true
-            type: array
-            groups: [article]
+            groups: [ article ]
         link:
             expose: true
-            groups: [article]
+            groups: [ article ]
+        author:
+            expose: true
+            groups: [ article.user ]
         comments:
             expose: true
-            groups: [article.comments]
+            groups: [ article.comments ]
     virtual_properties:
         getUuid:
             serialized_name: id
+            groups: [ article ]
+        getAuthorName:
+            serialized_name: authorName
             groups: [ article ]
