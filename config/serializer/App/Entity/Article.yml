@@ -10,6 +10,11 @@ App\Entity\Article:
               absolute: false
           exclusion:
               groups: [ hateoas ]
+        - rel: cover
+          embedded: expr(service('app.article_service').getCover(object, true))
+          exclusion:
+              exclude_if: expr(object.getCoverFilename() === null)
+              groups: [ hateoas, article ]
     properties:
         title:
             expose: true

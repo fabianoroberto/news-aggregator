@@ -16,4 +16,5 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface ArticleRepositoryInterface extends PaginatorInterface, ObjectRepository
 {
+    public function store(Article $article);
 }

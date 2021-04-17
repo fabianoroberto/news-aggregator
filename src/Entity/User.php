@@ -67,6 +67,11 @@ class User implements UserInterface
     private Collection $articles;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $photoFilename;
+
+    /**
      * Class Invariant:
      * Every user has a valid email and at least one valid role
      */
@@ -224,6 +229,18 @@ class User implements UserInterface
     private function setRoles(array $roles): self
     {
         $this->roles = \array_unique($roles);
+
+        return $this;
+    }
+
+    public function getPhotoFilename(): ?string
+    {
+        return $this->photoFilename;
+    }
+
+    public function setPhotoFilename(?string $photoFilename): self
+    {
+        $this->photoFilename = $photoFilename;
 
         return $this;
     }

@@ -55,10 +55,16 @@ class Article
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private User $author;
 
-    public function __construct()
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $coverFilename = null;
+
+    public function __construct(User $author)
     {
+        $this->author = $author;
         $this->comments = new ArrayCollection();
     }
 
@@ -148,7 +154,7 @@ class Article
         return $this->author;
     }
 
-    public function setAuthor(?User $author): self
+    public function setAuthor(User $author): self
     {
         $this->author = $author;
 
@@ -158,5 +164,17 @@ class Article
     public function getAuthorName(): string
     {
         return $this->getAuthor()->getFullName();
+    }
+
+    public function getCoverFilename(): ?string
+    {
+        return $this->coverFilename;
+    }
+
+    public function setCoverFilename(?string $coverFilename): self
+    {
+        $this->coverFilename = $coverFilename;
+
+        return $this;
     }
 }

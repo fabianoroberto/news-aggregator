@@ -33,7 +33,7 @@ class UserFixtures extends BaseFixtures
             $username = $this->faker->userName();
             $email = \sprintf('%s@newsaggregator.local', $username);
 
-            $entity = new User($email, ['ROLE_USER'], $this->faker->firstName, $this->faker->lastName);
+            $entity = new User($email, ['ROLE_USER'], $this->faker->firstName(), $this->faker->lastName());
 
             $entity->setPassword($this->passwordEncoder->encodePassword(
                 $entity,

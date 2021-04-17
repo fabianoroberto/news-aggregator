@@ -7,6 +7,8 @@ namespace App\Repository;
 use App\Entity\Article;
 use App\Repository\Traits\HateoasRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -57,4 +59,14 @@ class ArticleRepository extends ServiceEntityRepository implements ArticleReposi
         ;
     }
     */
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function store(Article $article)
+    {
+        $this->_em->persist($article);
+        $this->_em->flush($article);
+    }
 }

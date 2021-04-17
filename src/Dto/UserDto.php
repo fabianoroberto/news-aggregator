@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation as JMS;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UserDto extends ValidatedDto
+class UserDto
 {
     /**
      * @var string
