@@ -256,7 +256,7 @@ class User implements UserInterface
 
     public function isAdmin(): bool
     {
-        return \array_key_exists('ROLE_ADMIN', $this->roles);
+        return \in_array('ROLE_ADMIN', $this->roles);
     }
 
     private function setRoles(array $roles): self

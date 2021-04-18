@@ -33,7 +33,7 @@ class ApiAuthenticationController extends ApiBaseController
     }
 
     /**
-     * @Rest\Post("/api/v1/auth/logout", name="api_post_logout")
+     * @Rest\Post("/v1/auth/logout", name="api_post_logout")
      * @IsGranted("ROLE_USER")
      *
      * @OA\RequestBody(
@@ -74,7 +74,7 @@ class ApiAuthenticationController extends ApiBaseController
     }
 
     /**
-     * @Rest\Post("/api/v1/auth/password-reset-request", name="api_post_password_reset_request")
+     * @Rest\Post("/v1/auth/password-reset-request", name="api_post_password_reset_request")
      * @ParamConverter("createPasswordResetRequest", converter="fos_rest.request_body")
      *
      * @OA\RequestBody(
@@ -99,7 +99,7 @@ class ApiAuthenticationController extends ApiBaseController
     }
 
     /**
-     * @Rest\Post("/api/v1/auth/set-password", name="api_post_set_password")
+     * @Rest\Post("/v1/auth/set-password", name="api_post_set_password")
      * @ParamConverter("setPasswordRequest", converter="fos_rest.request_body")
      *
      * @OA\RequestBody(

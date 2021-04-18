@@ -23,5 +23,4 @@ fos_rest:
     format_listener:
         enabled: true
         rules:
-            - { path: ^/api, prefer_extension: true, fallback_format: json, priorities: [ json ] }
-            - { path: '^/', priorities: [ 'html', '*/*'], fallback_format: html, prefer_extension: true }
+            - { path: '^/', prefer_extension: true, fallback_format: json, priorities: [ json ] }

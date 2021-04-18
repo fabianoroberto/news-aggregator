@@ -39,7 +39,7 @@ class ApiArticleController extends ApiBaseController
     }
 
     /**
-     * @Rest\Get("/api/v1/public/articles", name="api_get_articles")
+     * @Rest\Get("/v1/public/articles", name="api_get_articles")
      *
      * @OA\Parameter(
      *     in="query",
@@ -107,7 +107,7 @@ class ApiArticleController extends ApiBaseController
     }
 
     /**
-     * @Rest\Get("/api/v1/public/articles/{id}", name="api_get_article")
+     * @Rest\Get("/v1/public/articles/{id}", name="api_get_article")
      *
      * @OA\Parameter(
      *     in="query",
@@ -157,7 +157,7 @@ class ApiArticleController extends ApiBaseController
     }
 
     /**
-     * @Rest\Post("/api/v1/articles", name="api_post_article")
+     * @Rest\Post("/v1/articles", name="api_post_article")
      * @ParamConverter("articleCreateRequest", converter="fos_rest.request_body")
      *
      * @OA\RequestBody(
@@ -224,7 +224,7 @@ class ApiArticleController extends ApiBaseController
     }
 
     /**
-     * @Rest\Put("/api/v1/articles/{id}", name="api_put_article")
+     * @Rest\Put("/v1/articles/{id}", name="api_put_article")
      * @ParamConverter("articleUpdateRequest", converter="fos_rest.request_body")
      *
      * @OA\RequestBody(
@@ -296,7 +296,7 @@ class ApiArticleController extends ApiBaseController
     }
 
     /**
-     * @Rest\Post("/api/v1/articles/{id}/image", name="api_post_article_image")
+     * @Rest\Post("/v1/articles/{id}/image", name="api_post_article_image")
      *
      * @OA\RequestBody(
      *     required=true,
@@ -360,7 +360,7 @@ class ApiArticleController extends ApiBaseController
     }
 
     /**
-     * @Rest\Delete("/api/v1/articles/{id}", name="api_delete_article")
+     * @Rest\Delete("/v1/articles/{id}", name="api_delete_article")
      *
      * @OA\Parameter(
      *     in="query",

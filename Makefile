@@ -30,3 +30,6 @@ update_schema: ## Update DB Schema
 
 refresh: ## Refresh cache
 	symfony console cache:clear
+
+build_fe: ## Build Frontend
+	cd spa && API_ENDPOINT=http://api.news-aggregator.local:8082/ yarn encore dev

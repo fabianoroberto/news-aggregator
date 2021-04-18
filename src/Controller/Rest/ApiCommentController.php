@@ -37,7 +37,7 @@ class ApiCommentController extends ApiBaseController
     }
 
     /**
-     * @Rest\Get("/api/v1/public/articles/{parentId}/comments", name="api_get_article_comments")
+     * @Rest\Get("/v1/public/articles/{parentId}/comments", name="api_get_article_comments")
      * @ParamConverter("article", options={"mapping": {"parentId": "id"}})
      *
      * @OA\Parameter(
@@ -107,7 +107,7 @@ class ApiCommentController extends ApiBaseController
     }
 
     /**
-     * @Rest\Get("/api/v1/public/articles/{parentId}/comments/{id}", name="api_get_article_comment")
+     * @Rest\Get("/v1/public/articles/{parentId}/comments/{id}", name="api_get_article_comment")
      * @ParamConverter("article", options={"mapping": {"parentId": "id"}})
      *
      * @OA\Parameter(
@@ -156,7 +156,7 @@ class ApiCommentController extends ApiBaseController
     }
 
     /**
-     * @Rest\Post("/api/v1/public/articles/{parentId}/comments", name="api_post_article_comments")
+     * @Rest\Post("/v1/public/articles/{parentId}/comments", name="api_post_article_comments")
      * @ParamConverter("commentCreateRequest", converter="fos_rest.request_body")
      * @ParamConverter("article", options={"mapping": {"parentId": "id"}})
      *
@@ -219,7 +219,7 @@ class ApiCommentController extends ApiBaseController
     }
 
     /**
-     * @Rest\Post("/api/v1/public/articles/{parentId}/comments/{id}/image", name="api_post_article_comments_image")
+     * @Rest\Post("/v1/public/articles/{parentId}/comments/{id}/image", name="api_post_article_comments_image")
      * @ParamConverter("article", options={"mapping": {"parentId": "id"}})
      *
      * @OA\RequestBody(
@@ -279,7 +279,7 @@ class ApiCommentController extends ApiBaseController
     }
 
     /**
-     * @Rest\Delete("/api/v1/articles/{parentId}/comments/{id}", name="api_delete_article_comments")
+     * @Rest\Delete("/v1/articles/{parentId}/comments/{id}", name="api_delete_article_comments")
      * @ParamConverter("article", options={"mapping": {"parentId": "id"}})
      *
      * @OA\Parameter(

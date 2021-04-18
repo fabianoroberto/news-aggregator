@@ -21,25 +21,25 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         login:
-            pattern:  ^/api/v1/auth/login
+            pattern:  ^/v1/auth/login
             stateless: true
             anonymous: true
             provider: entity_user_provider
             json_login:
-                check_path:               /api/v1/auth/login
+                check_path:               /v1/auth/login
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
             user_checker: App\Security\UserChecker
         auth_api:
-            pattern:  ^/api/v1/auth/(refresh-token$|password-reset-request$|set-password$)
+            pattern:  ^/v1/auth/(refresh-token$|password-reset-request$|set-password$)
             stateless: true
             anonymous: true
         public_api:
-            pattern: ^/api/v1/public/
+            pattern: ^/v1/public/
             stateless: true
             anonymous: true
         private_api:
-            pattern:   ^/api/v1/
+            pattern: ^/v1/
             stateless: true
             provider: jwt_user_provider
             guard:
@@ -60,12 +60,12 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/v1/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/v1/auth/(refresh-token$|password-reset-request$|set-password$), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/v1/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1, 192.168.0.1/24] }
-        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, port: 8080 }
-        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, host: news-aggregator\.local$ }
+        - { path: ^/v1/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/v1/auth/(refresh-token$|password-reset-request$|set-password$), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/v1/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1, 192.168.0.1/24] }
+        - { path: ^/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, port: 8080 }
+        - { path: ^/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY, host: api\.news-aggregator\.local$ }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

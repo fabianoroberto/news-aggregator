@@ -29,7 +29,7 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
-     * @Rest\Get("/api/v1/users", name="api_get_users")
+     * @Rest\Get("/v1/users", name="api_get_users")
      *
      * @OA\Parameter(
      *     in="query",
@@ -95,7 +95,7 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
-     * @Rest\Get("/api/v1/user/{id}", name="api_get_user")
+     * @Rest\Get("/v1/user/{id}", name="api_get_user")
      * @Security(name="Bearer")
      *
      * @OA\Parameter(
@@ -144,7 +144,7 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
-     * @Rest\Get("/api/v1/users/me", name="api_get_users_me")
+     * @Rest\Get("/v1/users/me", name="api_get_users_me")
      *
      * @OA\Parameter(
      *     in="query",

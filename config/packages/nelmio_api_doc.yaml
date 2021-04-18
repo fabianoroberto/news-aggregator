@@ -5,7 +5,7 @@ nelmio_api_doc:
             description: This is an awesome app!
             version: 0.1.1
         servers:
-          - url: http://news-aggregator.local:8082
+          - url: http://api.news-aggregator.local:8082
             description: Local API
         components:
             securitySchemes:
@@ -16,7 +16,7 @@ nelmio_api_doc:
         security:
             - Bearer: []
         paths:
-            /api/v1/auth/login:
+            /v1/auth/login:
                 post:
                     tags: [ Authentication ]
                     requestBody:
@@ -34,7 +34,7 @@ nelmio_api_doc:
                             description: JWT Token
                             content:
                                 'application/json': { }
-            /api/v1/auth/refresh-token:
+            /v1/auth/refresh-token:
                 post:
                     tags: [ Authentication ]
                     requestBody:
@@ -53,4 +53,4 @@ nelmio_api_doc:
                                 'application/json': { }
     areas: # to filter documented areas
         path_patterns:
-            - ^/api(?!/doc|/doc\.json$) # Accepts routes under /api except /api/doc
+            - ^/v1(?!/doc|/doc\.json$) # Accepts routes under /api except /api/doc

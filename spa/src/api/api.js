@@ -3,9 +3,9 @@ function fetchCollection(path) {
 }
 
 export function findArticles() {
-    return fetchCollection('api/v1/public/articles');
+    return fetchCollection('v1/public/articles');
 }
 
 export function findComments(article) {
-    return fetchCollection(`api/v1/public/articles/${article.id}/comments`);
+    return fetchCollection(`v1/public/articles/${article.id}/comments`);
 }

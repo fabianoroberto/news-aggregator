@@ -47,7 +47,7 @@ export default function Article({articles, id}) {
                 )}
             </div>
             <h4>{article.title}</h4>
-            <div className="comment-text">{article.content}</div>
+            <div className="comment-text" dangerouslySetInnerHTML={{__html: article.content}} />
             <Comment comments={comments} />
         </div>
     );
