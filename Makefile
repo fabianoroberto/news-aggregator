@@ -14,16 +14,19 @@ jwt: ## Create JWT private and public keys
 	openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:${JWT_PASSPHRASE}
 
 dump_env:
-	@composer dump-env ${APP_ENV}
+	symfony composer dump-env ${APP_ENV}
 
 create_db: ## Create DB
-	@bash dev/make/create_db.sh ${APP_ENV}
+	symfony console doctrine:database:create
 
 reset_db: ## drop db, create db, update schema and load fixtures
-	@bash dev/make/reset_db.sh ${APP_ENV}
+	symfony console doctrine:database:drop --force
+	symfony console doctrine:database:create
+	symfony console doctrine:migrations:migrate --no-interaction --env=${APP_ENV}
+	symfony console doctrine:fixtures:load --no-interaction
 
 update_schema: ## Update DB Schema
-	@bash dev/make/update_schema.sh ${APP_ENV}
+	symfony console doctrine:migrations:migrate --no-interaction
 
 refresh: ## Refresh cache
-	@php bin/console cache:clear --env=${APP_ENV}
+	symfony console cache:clear

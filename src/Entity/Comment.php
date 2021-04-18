@@ -55,6 +55,11 @@ class Comment
      */
     private $photoFilename;
 
+    public function __construct(Article $article)
+    {
+        $this->article = $article;
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;

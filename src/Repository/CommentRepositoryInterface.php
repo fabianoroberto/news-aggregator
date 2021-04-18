@@ -6,6 +6,8 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use App\Repository\Common\PaginatorInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
@@ -16,4 +18,15 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface CommentRepositoryInterface extends PaginatorInterface, ObjectRepository
 {
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function store(Comment $comment);
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Comment $comment);
 }

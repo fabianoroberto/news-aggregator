@@ -10,6 +10,7 @@ Hateoas\Representation\PaginatedRepresentation:
                     filters: expr(object.getParameters()['filters'])
                     serializerGroups: expr(object.getParameters()['serializerGroups'])
                     orderBy: expr(object.getParameters()['orderBy'])
+                    parentId: expr(object.getParameters()['parentId'])
                 absolute: expr(object.isAbsolute())
             exclusion:
                 groups: [hateoas]
@@ -22,6 +23,7 @@ Hateoas\Representation\PaginatedRepresentation:
                     filters: expr(object.getParameters()['filters'])
                     serializerGroups: expr(object.getParameters()['serializerGroups'])
                     orderBy: expr(object.getParameters()['orderBy'])
+                    parentId: expr(object.getParameters()['parentId'])
                 absolute: expr(object.isAbsolute())
             exclusion:
                 groups: [hateoas]
@@ -34,6 +36,7 @@ Hateoas\Representation\PaginatedRepresentation:
                     filters: expr(object.getParameters()['filters'])
                     serializerGroups: expr(object.getParameters()['serializerGroups'])
                     orderBy: expr(object.getParameters()['orderBy'])
+                    parentId: expr(object.getParameters()['parentId'])
                 absolute: expr(object.isAbsolute())
             exclusion:
                 groups: [hateoas]
@@ -47,6 +50,7 @@ Hateoas\Representation\PaginatedRepresentation:
                     filters: expr(object.getParameters()['filters'])
                     serializerGroups: expr(object.getParameters()['serializerGroups'])
                     orderBy: expr(object.getParameters()['orderBy'])
+                    parentId: expr(object.getParameters()['parentId'])
                 absolute: expr(object.isAbsolute())
             exclusion:
                 groups: [hateoas]
@@ -60,6 +64,7 @@ Hateoas\Representation\PaginatedRepresentation:
                     filters: expr(object.getParameters()['filters'])
                     serializerGroups: expr(object.getParameters()['serializerGroups'])
                     orderBy: expr(object.getParameters()['orderBy'])
+                    parentId: expr(object.getParameters()['parentId'])
                 absolute: expr(object.isAbsolute())
             exclusion:
                 groups: [hateoas]

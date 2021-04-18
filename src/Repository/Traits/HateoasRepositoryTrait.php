@@ -43,14 +43,8 @@ trait HateoasRepositoryTrait
         return $this->getPager($qb, $page, $limit);
     }
 
-    /**
-     * @param bool $isCount
-     *
-     * @return QueryBuilder
-     */
-    protected function createQueryBuilderByFilters(array $filters, array $fields = ['id'], $isCount = false)
+    protected function createQueryBuilderByFilters(array $filters, array $fields = ['id'], bool $isCount = false): QueryBuilder
     {
-        /** @var QueryBuilder $qb */
         $qb = $this->createQueryBuilder($this->alias);
 
         $groupBy = [];

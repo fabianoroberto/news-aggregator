@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Dto\UserDto;
-use App\Dto\UserExtendedDto;
 use App\Repository\UserRepository;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,7 +43,6 @@ class User implements UserInterface
     private array $roles = [];
 
     /**
-     * @var string The hashed password
      * @ORM\Column(type="string", nullable=true)
      */
     private string $password;
@@ -70,6 +66,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $photoFilename;
+
+    /**
+     * @ORM\Column(type="string", length=180, nullable=true)
+     */
+    private ?string $confirmationToken;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTimeInterface $passwordRequestedAt;
 
     /**
      * Class Invariant:
@@ -176,26 +182,6 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public static function createFromRequest(UserDto $dto): self
-    {
-        $user = new self($dto->getEmail());
-        $user->update($dto);
-
-        return $user;
-    }
-
-    public function update(UserDto $dto)
-    {
-        $this->email = $dto->getEmail();
-        $this->firstName = $dto->getFirstName();
-        $this->lastName = $dto->getLastName();
-
-        if ($dto instanceof UserExtendedDto) {
-            $this->setDeletedAt($dto->isEnabled() ? null : new DateTime());
-            $this->roles = [$dto->getRole()];
-        }
-    }
-
     /**
      * @return Article[]|Collection
      */
@@ -234,6 +220,36 @@ class User implements UserInterface
     public function setPhotoFilename(?string $photoFilename): self
     {
         $this->photoFilename = $photoFilename;
+
+        return $this;
+    }
+
+    public function getPasswordRequestedAt(): ?\DateTimeInterface
+    {
+        return $this->passwordRequestedAt;
+    }
+
+    public function setPasswordRequestedAt(\DateTimeInterface $passwordRequestedAt): self
+    {
+        $this->passwordRequestedAt = $passwordRequestedAt;
+
+        return $this;
+    }
+
+    public function isPasswordRequestNonExpired($ttl): bool
+    {
+        return $this->getPasswordRequestedAt() instanceof \DateTimeInterface
+            && $this->getPasswordRequestedAt()->getTimestamp() + $ttl > \time();
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
 
         return $this;
     }

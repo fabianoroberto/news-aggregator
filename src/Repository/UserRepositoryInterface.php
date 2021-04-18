@@ -6,6 +6,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Repository\Common\PaginatorInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
@@ -16,4 +18,15 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface UserRepositoryInterface extends PaginatorInterface, ObjectRepository
 {
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function store(User $user);
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(User $user);
 }

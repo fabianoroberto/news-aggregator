@@ -38,7 +38,7 @@ class ArticleRepository extends ServiceEntityRepository implements ArticleReposi
     public function store(Article $article)
     {
         $this->_em->persist($article);
-        $this->_em->flush($article);
+        $this->_em->flush();
     }
 
     /**
@@ -48,6 +48,6 @@ class ArticleRepository extends ServiceEntityRepository implements ArticleReposi
     public function delete(Article $article)
     {
         $this->_em->remove($article);
-        $this->_em->flush($article);
+        $this->_em->flush();
     }
 }

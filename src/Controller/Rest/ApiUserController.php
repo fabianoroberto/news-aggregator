@@ -23,8 +23,9 @@ class ApiUserController extends ApiBaseController
 {
     use HateoasResponseTrait;
 
-    public function __construct(private UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        private UserRepositoryInterface $userRepository
+    ) {
     }
 
     /**

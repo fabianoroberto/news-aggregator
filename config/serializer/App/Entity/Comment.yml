@@ -3,13 +3,19 @@ App\Entity\Comment:
     relations:
         - rel: self
           href:
-              route: api_get_comment
+              route: api_get_article_comment
               parameters:
+                  parentId: expr(object.getArticle().getUuid())
                   id: expr(object.getUuid())
                   _format: json
               absolute: false
           exclusion:
               groups: [ hateoas ]
+        - rel: photo
+          embedded: expr(service('app.comment_service').getPhoto(object, true))
+          exclusion:
+              exclude_if: expr(object.getPhotoFilename() === null)
+              groups: [ hateoas, article ]
     properties:
         author:
             expose: true

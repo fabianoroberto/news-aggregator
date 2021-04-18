@@ -11,6 +11,7 @@ trait FullNamePropertiesTrait
 {
     /**
      * @JMS\Type("string")
+     * @Assert\Type("string")
      * @Assert\NotNull(message="First name is required.")
      * @Assert\NotBlank
      * @Assert\Length(
@@ -24,6 +25,7 @@ trait FullNamePropertiesTrait
 
     /**
      * @JMS\Type("string")
+     * @Assert\Type("string")
      * @Assert\NotNull(message="Last name is required.")
      * @Assert\NotBlank
      * @Assert\Length(

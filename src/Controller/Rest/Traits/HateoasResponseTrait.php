@@ -21,7 +21,7 @@ trait HateoasResponseTrait
         PaginatorInterface $repository,
         Request $request,
         array $defaultParams = [],
-        array $overrideFilters = []
+        array $overrideFilters = [],
     ): Response {
         $params = $this->getResolvedParams($request, $defaultParams);
 
@@ -40,13 +40,14 @@ trait HateoasResponseTrait
     protected function getPaginatedRepresentation(
         Pagerfanta $pager,
         string $routeName,
+        array $routeParams,
         array $params
     ): PaginatedRepresentation {
         $pagerFactory = new PagerfantaFactory('page', 'limit');
 
         return $pagerFactory->createRepresentation(
             $pager,
-            new Route($routeName, $params)
+            new Route($routeName, \array_merge($params, $routeParams))
         );
     }
 
@@ -74,7 +75,13 @@ trait HateoasResponseTrait
 
     protected function serializePaginatedResponse(Request $request, Pagerfanta $pager, array $params): Response
     {
-        $data = $this->getPaginatedRepresentation($pager, $request->get('_route'), $params);
+        $data = $this->getPaginatedRepresentation(
+            $pager,
+            $request->get('_route'),
+            $request->get('_route_params'),
+            $params
+        );
+
         $params['serializerGroups'][] = 'hateoas';
 
         return $this->serializeResponse($data, $params['serializerGroups']);
@@ -89,6 +96,7 @@ trait HateoasResponseTrait
                 'orderBy' => $defaultParams['orderBy'] ?? ['id' => 'ASC'],
                 'filters' => $defaultParams['filters'] ?? [],
                 'serializerGroups' => $defaultParams['serializerGroups'] ?? [],
+                'parentId' => $defaultParams['parentId'] ?? [],
             ])
             ->setNormalizer('page', function (Options $options, $value) {
                 return \filter_var($value, \FILTER_VALIDATE_INT);
