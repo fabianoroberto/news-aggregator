@@ -1,0 +1,15 @@
+# Read the documentation at https://github.com/thephpleague/flysystem-bundle/blob/master/docs/1-getting-started.md
+flysystem:
+    storages:
+        articles.storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/storage/articles'
+        users.storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/storage/users'
+        comments.storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/storage/comments'

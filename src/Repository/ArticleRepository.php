@@ -31,35 +31,6 @@ class ArticleRepository extends ServiceEntityRepository implements ArticleReposi
         parent::__construct($registry, Article::class);
     }
 
-    // /**
-    //  * @return Article[] Returns an array of Article objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('n.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Article
-    {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
     /**
      * @throws ORMException
      * @throws OptimisticLockException
@@ -67,6 +38,16 @@ class ArticleRepository extends ServiceEntityRepository implements ArticleReposi
     public function store(Article $article)
     {
         $this->_em->persist($article);
+        $this->_em->flush($article);
+    }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Article $article)
+    {
+        $this->_em->remove($article);
         $this->_em->flush($article);
     }
 }

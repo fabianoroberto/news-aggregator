@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Service;
 
@@ -8,6 +9,8 @@ use App\Dto\Request\ArticleUpdateRequest;
 use App\Entity\Article;
 use App\Entity\User;
 use App\Repository\ArticleRepositoryInterface;
+use Doctrine\ORM\ORMException;
+use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -64,7 +67,7 @@ class ArticleService
 
     public function saveImage(Article $article, UploadedFile $image): Article
     {
-        $imageName = \sprintf('%s.%s', $article->getUuid(), $image->getExtension());
+        $imageName = \sprintf('%s.%s', $article->getUuid(), $image->guessExtension());
 
         $this->storage->write(
             $imageName,
@@ -76,5 +79,26 @@ class ArticleService
         $this->articleRepository->store($article);
 
         return $article;
+    }
+
+    public function delete(Article $article): bool
+    {
+        try {
+            if ($article->getCoverFilename()) {
+                $this->storage->delete($article->getCoverFilename());
+            }
+
+            $this->articleRepository->delete($article);
+
+            return true;
+        } catch (FilesystemException $e) {
+            $this->logger->error($e->getMessage());
+
+            return false;
+        } catch (ORMException $e) {
+            $this->logger->error($e->getMessage());
+
+            return false;
+        }
     }
 }

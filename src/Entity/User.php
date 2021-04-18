@@ -226,13 +226,6 @@ class User implements UserInterface
         return $this;
     }
 
-    private function setRoles(array $roles): self
-    {
-        $this->roles = \array_unique($roles);
-
-        return $this;
-    }
-
     public function getPhotoFilename(): ?string
     {
         return $this->photoFilename;
@@ -241,6 +234,18 @@ class User implements UserInterface
     public function setPhotoFilename(?string $photoFilename): self
     {
         $this->photoFilename = $photoFilename;
+
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return \array_key_exists('ROLE_ADMIN', $this->roles);
+    }
+
+    private function setRoles(array $roles): self
+    {
+        $this->roles = \array_unique($roles);
 
         return $this;
     }

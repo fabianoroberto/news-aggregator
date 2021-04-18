@@ -14,13 +14,13 @@ use App\Service\ArticleService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Class ApiArticleController
@@ -29,8 +29,8 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ApiArticleController extends ApiBaseController
 {
-    use HateoasResponseTrait;
     use ErrorResponseTrait;
+    use HateoasResponseTrait;
 
     public function __construct(
         private ArticleRepositoryInterface $articleRepository,
@@ -159,7 +159,6 @@ class ApiArticleController extends ApiBaseController
     /**
      * @Rest\Post("/api/v1/articles", name="api_post_article")
      * @ParamConverter("articleCreateRequest", converter="fos_rest.request_body")
-     * @IsGranted("ROLE_ADMIN")
      *
      * @OA\RequestBody(
      *     @Model(type=ArticleCreateRequest::class),
@@ -195,6 +194,7 @@ class ApiArticleController extends ApiBaseController
      *         )
      *     )
      * )
+     *
      * @throws \Exception
      */
     public function create(
@@ -226,7 +226,6 @@ class ApiArticleController extends ApiBaseController
     /**
      * @Rest\Put("/api/v1/articles/{id}", name="api_put_article")
      * @ParamConverter("articleUpdateRequest", converter="fos_rest.request_body")
-     * @IsGranted("ROLE_ADMIN")
      *
      * @OA\RequestBody(
      *     @Model(type=ArticleCreateRequest::class),
@@ -262,6 +261,7 @@ class ApiArticleController extends ApiBaseController
      *         )
      *     )
      * )
+     *
      * @throws \Exception
      */
     public function update(
@@ -274,6 +274,12 @@ class ApiArticleController extends ApiBaseController
             $view = $this->constraintViolationView($validationErrors);
 
             return $this->handleView($view);
+        }
+
+        $user = $this->getLoggedUser();
+
+        if (!$user->isAdmin()) {
+            Assert::eq($article->getAuthor()->getUuid(), $user->getUuid(), 'You can edit only YOURS articles');
         }
 
         $params = (new OptionsResolver())
@@ -290,26 +296,20 @@ class ApiArticleController extends ApiBaseController
     }
 
     /**
-     * @Rest\Post("/api/v1/articles/{id}/image", name="api_post_article")
-     * @IsGranted("ROLE_ADMIN")
+     * @Rest\Post("/api/v1/articles/{id}/image", name="api_post_article_image")
      *
      * @OA\RequestBody(
      *     required=true,
      *     @OA\MediaType(
      *         mediaType="multipart/form-data",
      *         @OA\Schema(
-     *             schema="ArticleCreateImage",
-     *             allOf={
-     *                 @OA\Schema(ref=@Model(type=ArticleCreateRequest::class)),
-     *                 @OA\Schema(
-     *                     @OA\Property(
-     *                         description="file to upload",
-     *                         property="file",
-     *                         type="string",
-     *                         format="file",
-     *                     ),
-     *                 )
-     *             }
+     *             @OA\Property(
+     *                 description="File to upload",
+     *                 property="cover",
+     *                 type="string",
+     *                 format="file",
+     *             ),
+     *             required={"file"}
      *         )
      *     )
      * ),
@@ -338,7 +338,13 @@ class ApiArticleController extends ApiBaseController
      */
     public function saveImage(Request $request, Article $article): Response
     {
-        $image = $request->files->get('file');
+        $image = $request->files->get('cover');
+
+        $user = $this->getLoggedUser();
+
+        if (!$user->isAdmin()) {
+            Assert::eq($article->getAuthor()->getUuid(), $user->getUuid(), 'You can edit only YOURS articles');
+        }
 
         $params = (new OptionsResolver())
             ->setDefaults([
@@ -351,5 +357,48 @@ class ApiArticleController extends ApiBaseController
         $article = $this->articleService->saveImage($article, $image);
 
         return $this->serializeResponse($article, $params['serializerGroups']);
+    }
+
+    /**
+     * @Rest\Delete("/api/v1/articles/{id}", name="api_delete_article")
+     *
+     * @OA\Parameter(
+     *     in="query",
+     *     name="serializerGroups[]",
+     *     description="Custom serializer groups array",
+     *     required=false,
+     *     style="form",
+     *     @OA\Schema(
+     *         type="array",
+     *         @OA\Items(
+     *             type="string",
+     *             enum={
+     *                 "article",
+     *                 "article.user",
+     *                 "user",
+     *                 "article.comments",
+     *                 "comments"
+     *             }
+     *         )
+     *     )
+     * )
+     * @OA\Response(
+     *     response=Response::HTTP_OK,
+     *     description="Success"
+     * )
+     *
+     * @throws \Exception
+     */
+    public function delete(Article $article): JsonResponse
+    {
+        $user = $this->getLoggedUser();
+
+        if (!$user->isAdmin()) {
+            Assert::eq($article->getAuthor()->getUuid(), $user->getUuid(), 'You can edit only YOURS articles');
+        }
+
+        $status = $this->articleService->delete($article);
+
+        return new JsonResponse(['success' => $status]);
     }
 }
