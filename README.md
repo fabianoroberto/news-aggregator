@@ -1,6 +1,6 @@
-# News Aggregator
+# Article Aggregator
 
-> News aggregator build with Symfony 5.2
+> Article aggregator build with Symfony 5.2
 
 # How to start
 

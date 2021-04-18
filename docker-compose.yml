@@ -57,7 +57,11 @@ services:
       - ./docker/logs:/var/log
     depends_on:
       - php-fpm
+    extra_hosts:
+      - "news-aggregator.local:127.0.0.1"
+      - "api.news-aggregator.local:127.0.0.1"
     networks:
       default:
         aliases:
           - news-aggregator.local
+          - api.news-aggregator.local
