@@ -15,9 +15,7 @@ export default function Home({articles}) {
                             <h4 className="font-weight-light">
                                 {article.title}
                             </h4>
-                            <p>
-                                {article.content}
-                            </p>
+                            <div className="comment-text" dangerouslySetInnerHTML={{__html: article.content}} />
                         </div>
 
                         <Link className="btn btn-sm btn-blue stretched-link" href={'/article/'+article.id}>

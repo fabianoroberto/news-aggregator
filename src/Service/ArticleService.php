@@ -101,4 +101,18 @@ class ArticleService
             return false;
         }
     }
+
+    public function import(string $url, User $author): void
+    {
+        $rss = \simplexml_load_file($url);
+
+        foreach ($rss->channel->item as $item) {
+            $article = (new Article($author))
+                ->setTitle($item->title->__toString())
+                ->setContent($item->description->__toString())
+                ->setLink($item->link->__toString());
+
+            $this->articleRepository->store($article);
+        }
+    }
 }

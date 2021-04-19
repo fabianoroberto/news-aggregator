@@ -23,6 +23,8 @@ class User implements UserInterface
 {
     use SoftDeleteableEntity;
     use TimestampableEntity;
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_USER = 'ROLE_USER';
 
     /**
      * @ORM\Id
@@ -256,7 +258,7 @@ class User implements UserInterface
 
     public function isAdmin(): bool
     {
-        return \in_array('ROLE_ADMIN', $this->roles);
+        return \in_array(self::ROLE_ADMIN, $this->roles, true);
     }
 
     private function setRoles(array $roles): self

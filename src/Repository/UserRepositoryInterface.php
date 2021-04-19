@@ -18,6 +18,8 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface UserRepositoryInterface extends PaginatorInterface, ObjectRepository
 {
+    public function findOneByRole(string $role): ?User;
+
     /**
      * @throws ORMException
      * @throws OptimisticLockException

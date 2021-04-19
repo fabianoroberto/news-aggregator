@@ -16,7 +16,7 @@ function Comment({comments}) {
             {comments.map(comment => (
                 <div className="shadow border rounded-lg p-3 mb-4">
                     <div className="comment-img mr-3">
-                        {!comment._embedded.photo ? '' : (
+                        {!(comment._embedded && comment._embedded.photo) ? '' : (
                             <a href="#" target="_blank">
                                 <img src={comment._embedded.photo} />
                             </a>
@@ -42,7 +42,7 @@ export default function Article({articles, id}) {
     return (
         <div className="p-3">
             <div className="comment-img mr-3">
-                {!article._embedded.cover ? '' : (
+                {!(article._embedded && article._embedded.cover) ? '' : (
                     <img src={article._embedded.cover} />
                 )}
             </div>

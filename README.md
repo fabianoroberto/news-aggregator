@@ -78,6 +78,16 @@ symfony console doctrine:migrations:migrate --no-interaction
 symfony console doctrine:fixtures:load --no-interaction
 ```
 
+# Importazione
+
+> E' stato creato anche un metodo per riempire il database degli articoli partendo da Feed RSS.
+> Passando quindi un qualsiasi url standard RSS 2.0 verranno creati gli articoli in piattaforma
+> Un esempio di importazione è:
+>
+> ```sh
+> symfony console app:import-rss-news "https://news.google.com/rss?hl=it&gl=IT&ceid=IT:it"
+> ```
+
 # Autenticazione
 
 > L'autenticazione è stata gestita attraverso JWT. Interrogando l'endpoint `POST /v1/auth/login` passando:
@@ -126,7 +136,8 @@ symfony console doctrine:fixtures:load --no-interaction
 > * **Article** con il dettaglio di un singolo articolo e tutti i commenti su di esso applicati (basata sull'api `GET /v1/public/articles/{parentId}/comments`)
 
 ![Home](docs/images/spa-home.png)
-![Article](docs/images/spa-article.png)
+![Article1](docs/images/spa-article-1.png)
+![Article2](docs/images/spa-article-2.png)
 
 ## CORS
 
